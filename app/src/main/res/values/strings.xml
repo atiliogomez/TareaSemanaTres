@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TareaSemanaTres</string>
+    <string name="app_name">SemanaTres</string>
     <string name="boton_app">INGRESAR</string>
     <string name="nombre_mascota">Mascota</string>
     <string name="like">Like</string>
