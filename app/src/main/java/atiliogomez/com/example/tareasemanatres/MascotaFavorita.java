@@ -27,7 +27,6 @@ public class MascotaFavorita extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         findViewById(R.id.space).setVisibility(View.GONE);
-        findViewById(R.id.fav).setVisibility(View.INVISIBLE);
 
         listaMascotasFav = (RecyclerView) findViewById(R.id.rvfavmascotas);
         LinearLayoutManager llm = new LinearLayoutManager(this);

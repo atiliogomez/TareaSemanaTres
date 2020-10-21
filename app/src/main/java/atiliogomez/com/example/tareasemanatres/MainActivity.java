@@ -1,65 +1,64 @@
 package atiliogomez.com.example.tareasemanatres;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Switch;
-import android.widget.Toolbar;
+
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
-    ArrayList<Mascota> mascotas;
-    private RecyclerView listaMascotas;
 
+public class MainActivity extends AppCompatActivity {
+    private Toolbar toolbar;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        setUpViewPager();
 
-
-        androidx.appcompat.widget.Toolbar miActionBar=(androidx.appcompat.widget.Toolbar) findViewById(R.id.miActionBar);
-        setSupportActionBar(miActionBar);
-
-        listaMascotas = (RecyclerView) findViewById(R.id.rvmascotas);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-
-        listaMascotas.setLayoutManager(llm);
-        inicializarListaMascotas();
-        inicializarAdpatador();
+        if(toolbar != null) {
+            androidx.appcompat.widget.Toolbar miActionBar=(androidx.appcompat.widget.Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(miActionBar);
+        }
     }
 
-    public void irSegundaActividad (View view){
-        Intent intent = new Intent(MainActivity.this, MascotaFavorita.class);
-        startActivity(intent);
+    private ArrayList<Fragment> agregarFragments(){
+        ArrayList<Fragment> fragments = new ArrayList<>();
+        fragments.add(new ReciclerViewFragment());
+        fragments.add (new PerfilFragment());
+        return fragments;
+    }
 
+    private void setUpViewPager (){
+        viewPager.setAdapter(new PageAdapter(getSupportFragmentManager(), agregarFragments()));
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.getTabAt(0).setIcon(R.drawable.home);
+        tabLayout.getTabAt(1).setIcon(R.drawable.perfil);
     }
-    public MascotaAdapter adaptador;
-    private void inicializarAdpatador (){
-        adaptador = new MascotaAdapter(mascotas, this);
-        listaMascotas.setAdapter(adaptador);
-    }
-    public  void inicializarListaMascotas () {
-        mascotas = new ArrayList<Mascota>();
-        mascotas.add(new Mascota(R.drawable.mascota1,"Gizmo","3"));
-        mascotas.add(new Mascota(R.drawable.mascota2,"Gremlin","5"));
-        mascotas.add(new Mascota(R.drawable.mascota3,"Perrito","2"));
-        mascotas.add(new Mascota(R.drawable.mascota4,"Gatito","1"));
-        mascotas.add(new Mascota(R.drawable.mascota5,"Zuricata","6"));
-        mascotas.add(new Mascota(R.drawable.mascota6,"Pato","4"));
-        mascotas.add(new Mascota(R.drawable.mascota7,"Chancho","4"));
-        mascotas.add(new Mascota(R.drawable.mascota8,"Hurón","6"));
-        mascotas.add(new Mascota(R.drawable.mascota9,"Tortuga","7"));
-        mascotas.add(new Mascota(R.drawable.mascota10,"Lagartija","2"));
-    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -70,12 +69,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
+            case R.id.mAcerca:
+                Intent intent = new Intent(this,ActivityAcerca.class);
+                startActivity(intent);
+                break;
 
             case R.id.mContacto:
                 Intent intent1 = new Intent(this,ActivityContacto.class);
                 startActivity(intent1);
                 break;
-
+            case R.id.mFav:
+                Intent intent2 = new Intent(this,MascotaFavorita.class);
+                startActivity(intent2);
+                break;
         }
 
 
